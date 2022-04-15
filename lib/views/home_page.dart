@@ -1,4 +1,5 @@
 import 'package:app001/models/weather_model.dart';
+import 'package:app001/wedgits/text.dart';
 import 'package:flutter/material.dart';
 
 import '../serve/weather_api.dart';
@@ -26,19 +27,71 @@ class _HomePageState extends State<HomePage> {
         future: getData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return Center(
-              child: Column(
-                children: [
-                  Text(
-                    data != null ? data!.temp.toString() : "Loding",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                  ),
-                  // Text("${data!.feelsLike}"),
-                  // Text("${data!.main}"),
-                  // Text("${data!.max}"),
-                  // Text("${data!.min}"),
-                  // Text("${data!.name}"),
-                ],
+            return Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                        "assets/${data!.main.toString().toLowerCase()}.png"),
+                    fit: BoxFit.cover),
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: TextWidget(
+                              text: data!.name.toString().toUpperCase()),
+                        ),
+                      ],
+                    ),
+                    //const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Text(
+                          "${data!.temp?.round()}",
+                          style: const TextStyle(
+                              fontSize: 120,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        const Text(
+                          "°",
+                          style: TextStyle(
+                              height: -.8, color: Colors.white, fontSize: 40),
+                        ),
+                        const Spacer(),
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: Text(
+                            "${data!.main}" == "Snow"
+                                ? "Its Snowing"
+                                : "${data!.main}" == "Clouds"
+                                    ? "Cloudy skies"
+                                    : "${data!.main}" == "Clear"
+                                        ? "Clear skies"
+                                        : "${data!.main}" == "Thunderstorm"
+                                            ? "Thunderstorms"
+                                            : "Rain is coming",
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      data != null ? data!.temp.toString() : "Loading",
+                      style: const TextStyle(fontSize: 20, color: Colors.black),
+                    ),
+                  ],
+                ),
               ),
             );
           } else {

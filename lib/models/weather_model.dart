@@ -21,6 +21,6 @@ class WeatherModel {
     feelsLike = json["main"]["feels_like"];
     min = json["main"]["temp_min"];
     max = json["main"]["temp_max"];
-    main = json["weather"]["main"];
+    main = json["weather"][0]["main"];
   }
 }
